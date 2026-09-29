@@ -1,6 +1,7 @@
 # BAT-X3 HSS — Operatör Arayüzü
 
 BAT-X3 HSS, bir yarışma turret'ının (Havadan gelen tehditleri tespit edip izleyen bir silah sistemi) operatör kontrol sistemidir. Görüntü işleme ve tespit tarafı ayrı bir Python servisinde çalışır; bu repo, o servisle özel bir UDP protokolü üzerinden konuşan **operatör arayüzlerini** içerir.
+Python servisi: [ekrem117/bat-x3-hss](https://github.com/ekrem117/bat-x3-hss)
 
 İki farklı istemci aynı alt katmanları (Domain/Application/Infrastructure) paylaşır:
 
