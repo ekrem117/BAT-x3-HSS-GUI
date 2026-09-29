@@ -1,0 +1,8 @@
+ @model StatusViewModel
+
+ @if (Model.IsRunning)
+{
+    <p>
+        <strong>Local Port:</strong> <code>@Model.LocalPort</code>
+    </p>
+}

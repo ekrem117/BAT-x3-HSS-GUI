@@ -1,0 +1,136 @@
+@{
+    ViewData["Title"] = "Sistem Durumu";
+}
+
+<div class="op-page">
+
+    <div class="op-header">
+        <div>
+            <h1 class="op-title">Sistem Durumu</h1>
+            <p class="op-subtitle">Komut, video ve tespit kanallarının çalışma durumu</p>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- CHANNEL HEALTH                                    -->
+    <!-- ================================================= -->
+
+    <div class="op-card" style="margin-top: 14px;">
+        <div class="op-card-header">
+            <span class="op-card-title">Kanal Durumu</span>
+            <span class="op-badge-label">Canlı durum</span>
+        </div>
+
+        <div class="op-card-divider"></div>
+
+        <div class="diag-channel-grid">
+
+            @foreach (var channel in new[] { ("Command", "Komut"), ("Video", "Video"), ("Detection", "Tespit") })
+            {
+                <div class="op-card diag-channel-card">
+                    <div class="op-card-header">
+                        <span class="op-card-title">@channel.Item2</span>
+                        <span class="op-status-pill op-status-pill-unknown" id="channelBadge-@channel.Item1">BİLİNMİYOR</span>
+                    </div>
+
+                    <p class="diag-endpoint" id="channelEndpoint-@channel.Item1">—</p>
+
+                    <div class="op-card-divider"></div>
+
+                    <div class="diag-stat-line">
+                        <span class="op-field-label">Son aktivite</span>
+                        <span class="op-metric-value" id="channelActivity-@channel.Item1">—</span>
+                    </div>
+                    <div class="diag-stat-line">
+                        <span class="op-field-label">Başarılı</span>
+                        <span class="op-metric-value" id="channelSuccess-@channel.Item1">0</span>
+                    </div>
+                    <div class="diag-stat-line">
+                        <span class="op-field-label">Hata</span>
+                        <span class="op-metric-value" id="channelErrors-@channel.Item1">0</span>
+                    </div>
+
+                    <p class="op-error-text" id="channelLastError-@channel.Item1"></p>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- SYNCHRONIZATION                                   -->
+    <!-- ================================================= -->
+
+    <div class="op-card" style="margin-top: 12px;">
+        <span class="op-card-title">Senkronizasyon</span>
+        <p class="op-subtitle" style="margin: 4px 0 0;">Video ve tespit frame eşleştirme sayaçları</p>
+
+        <div class="op-card-divider"></div>
+
+        <div class="diag-stat-row">
+            <div class="diag-stat diag-stat-accent">
+                <span class="diag-stat-value" id="matchedFramesText">0</span>
+                <span class="op-field-label">Eşleşen Frame</span>
+            </div>
+            <div class="diag-stat">
+                <span class="diag-stat-value" id="videoOnlyFramesText">0</span>
+                <span class="op-field-label">Yalnız Video</span>
+            </div>
+            <div class="diag-stat">
+                <span class="diag-stat-value" id="droppedDetectionFramesText">0</span>
+                <span class="op-field-label">Atılan Tespit</span>
+            </div>
+        </div>
+
+        <p class="op-subtitle" style="margin-top: 9px;">Sayaçlar uygulama çalıştığı sürece birikimli olarak güncellenir.</p>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.7/dist/browser/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/turretHub")
+            .build();
+
+        const STATE_INFO = {
+            Healthy: { label: "AKTİF", pillClass: "op-status-pill-safe" },
+            Waiting: { label: "BEKLİYOR", pillClass: "op-status-pill-info" },
+            Degraded: { label: "UYARI", pillClass: "op-status-pill-armed" },
+            Stale: { label: "GÜNCEL DEĞİL", pillClass: "op-status-pill-armed" },
+            Stopped: { label: "DURDU", pillClass: "op-status-pill-unknown" }
+        };
+
+        function formatActivity(ms) {
+            if (ms === null || ms === undefined) {
+                return "—";
+            }
+            return ms < 1000 ? Math.round(ms) + " ms" : (ms / 1000).toFixed(1) + " s";
+        }
+
+        connection.on("ReceiveDiagnostics", function (snapshot) {
+            snapshot.channels.forEach(function (channel) {
+                const info = STATE_INFO[channel.state] || { label: "BİLİNMİYOR", pillClass: "op-status-pill-unknown" };
+
+                const badge = document.getElementById("channelBadge-" + channel.channel);
+                badge.textContent = info.label;
+                badge.className = "op-status-pill " + info.pillClass;
+
+                document.getElementById("channelEndpoint-" + channel.channel).textContent = channel.endpoint;
+                document.getElementById("channelActivity-" + channel.channel).textContent = formatActivity(channel.lastActivityMs);
+                document.getElementById("channelSuccess-" + channel.channel).textContent = channel.successCount;
+                document.getElementById("channelErrors-" + channel.channel).textContent = channel.errorCount;
+                document.getElementById("channelLastError-" + channel.channel).textContent = channel.lastError || "";
+            });
+
+            document.getElementById("matchedFramesText").textContent = snapshot.matchedFrames;
+            document.getElementById("videoOnlyFramesText").textContent = snapshot.videoOnlyFrames;
+            document.getElementById("droppedDetectionFramesText").textContent = snapshot.droppedDetectionFrames;
+        });
+
+        connection.start().catch(function (err) {
+            console.error(err);
+        });
+    </script>
+}

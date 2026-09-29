@@ -1,0 +1,333 @@
+﻿<UserControl x:Class="BatX3_HSS_GUI.Client.Views.ParametersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Loaded="OnLoaded"
+             HorizontalContentAlignment="Stretch"
+             VerticalContentAlignment="Stretch">
+
+    <UserControl.Resources>
+
+        <!-- ========================================================= -->
+        <!-- PARAMETER FIELD                                           -->
+        <!-- ========================================================= -->
+
+        <DataTemplate x:Key="ConfigurationParameterTemplate">
+
+            <Grid Margin="6,5,12,10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- ================================================= -->
+                <!-- LABEL + RANGE                                     -->
+                <!-- ================================================= -->
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding DisplayName}"
+                               Style="{StaticResource FieldLabelTextStyle}"
+                               VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Column="1"
+                               Margin="8,0,0,0"
+                               Style="{StaticResource FieldHintTextStyle}"
+                               VerticalAlignment="Center">
+
+                        <Run Text="{Binding Minimum, Mode=OneWay}" />
+                        <Run Text=" – " />
+                        <Run Text="{Binding Maximum, Mode=OneWay}" />
+
+                    </TextBlock>
+
+                </Grid>
+
+                <!-- ================================================= -->
+                <!-- EDITOR                                            -->
+                <!-- ================================================= -->
+
+                <Grid Grid.Row="1"
+                      Margin="0,5,0,0">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0"
+                             MinWidth="80"
+                             Text="{Binding NumericText,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="{Binding UiDefinition.Description}"
+                             Style="{StaticResource TextInputStyle}" />
+
+                    <Button Grid.Column="2"
+                            Content="Oku"
+                            Command="{Binding ReadCommand}"
+                            Style="{StaticResource CompactSecondaryButtonStyle}" />
+
+                    <Button Grid.Column="4"
+                            Content="Uygula"
+                            Command="{Binding WriteCommand}"
+                            Style="{StaticResource CompactPrimaryButtonStyle}" />
+
+                </Grid>
+
+                <!-- ================================================= -->
+                <!-- ERROR                                             -->
+                <!-- ================================================= -->
+
+                <TextBlock Grid.Row="2"
+                           Margin="0,5,0,0"
+                           FontSize="10"
+                           Foreground="{DynamicResource ErrorBrush}"
+                           Text="{Binding ErrorMessage}"
+                           TextWrapping="Wrap">
+
+                    <TextBlock.Style>
+
+                        <Style TargetType="TextBlock">
+
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+
+                            <Style.Triggers>
+
+                                <DataTrigger Binding="{Binding HasError}"
+                                             Value="False">
+
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+
+                                </DataTrigger>
+
+                            </Style.Triggers>
+
+                        </Style>
+
+                    </TextBlock.Style>
+
+                </TextBlock>
+
+            </Grid>
+
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <!-- ============================================================= -->
+    <!-- CONTENT                                                       -->
+    <!-- ============================================================= -->
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  HorizontalContentAlignment="Stretch">
+
+        <StackPanel HorizontalAlignment="Stretch"
+                    Margin="0,0,10,0">
+
+            <!-- ===================================================== -->
+            <!-- ENEMY COLOR                                           -->
+            <!-- ===================================================== -->
+
+            <Border HorizontalAlignment="Stretch"
+                    Style="{StaticResource CompactCardBorderStyle}">
+
+                <StackPanel>
+
+                    <!-- Header -->
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+
+                            <TextBlock Text="Düşman Renk Algılama"
+                                       Style="{StaticResource SectionTitleTextStyle}" />
+
+                            <TextBlock Margin="0,3,0,0"
+                                       Text="Kırmızı hedefler için HSV eşik değerleri"
+                                       Style="{StaticResource MutedTextStyle}" />
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+
+                            <Border Width="9"
+                                    Height="9"
+                                    Background="#F50A0A"
+                                    CornerRadius="5" />
+
+                            <TextBlock Margin="6,0,0,0"
+                                       Text="Düşman"
+                                       Style="{StaticResource MutedTextStyle}" />
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <Border Height="1"
+                            Margin="0,10,0,7"
+                            Background="{DynamicResource BorderBrush}" />
+
+                    <!-- Parameters -->
+
+                    <ItemsControl ItemsSource="{Binding EnemyColorParameters}"
+                                  ItemTemplate="{StaticResource ConfigurationParameterTemplate}"
+                                  HorizontalContentAlignment="Stretch">
+
+                        <ItemsControl.ItemsPanel>
+
+                            <ItemsPanelTemplate>
+
+                                <UniformGrid Columns="2" />
+
+                            </ItemsPanelTemplate>
+
+                        </ItemsControl.ItemsPanel>
+
+                    </ItemsControl>
+
+                </StackPanel>
+
+            </Border>
+
+            <!-- ===================================================== -->
+            <!-- FRIEND COLOR                                          -->
+            <!-- ===================================================== -->
+
+            <Border Margin="0,12,0,0"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource CompactCardBorderStyle}">
+
+                <StackPanel>
+
+                    <!-- Header -->
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+
+                            <TextBlock Text="Dost Renk Algılama"
+                                       Style="{StaticResource SectionTitleTextStyle}" />
+
+                            <TextBlock Margin="0,3,0,0"
+                                       Text="Dost hedefler için HSV eşik değerleri"
+                                       Style="{StaticResource MutedTextStyle}" />
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+
+                            <Border Width="9"
+                                    Height="9"
+                                    Background="#00A3E0"
+                                    CornerRadius="5" />
+
+                            <TextBlock Margin="6,0,0,0"
+                                       Text="Dost"
+                                       Style="{StaticResource MutedTextStyle}" />
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <Border Height="1"
+                            Margin="0,10,0,7"
+                            Background="{DynamicResource BorderBrush}" />
+
+                    <!-- Parameters -->
+
+                    <ItemsControl ItemsSource="{Binding FriendColorParameters}"
+                                  ItemTemplate="{StaticResource ConfigurationParameterTemplate}"
+                                  HorizontalContentAlignment="Stretch">
+
+                        <ItemsControl.ItemsPanel>
+
+                            <ItemsPanelTemplate>
+
+                                <UniformGrid Columns="2" />
+
+                            </ItemsPanelTemplate>
+
+                        </ItemsControl.ItemsPanel>
+
+                    </ItemsControl>
+
+                </StackPanel>
+
+            </Border>
+
+            <!-- ===================================================== -->
+            <!-- CONTROL                                               -->
+            <!-- ===================================================== -->
+
+            <Border Margin="0,12,0,0"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource CompactCardBorderStyle}">
+
+                <StackPanel>
+
+                    <!-- Header -->
+
+                    <TextBlock Text="Kontrol"
+                               Style="{StaticResource SectionTitleTextStyle}" />
+
+                    <TextBlock Margin="0,3,0,0"
+                               Text="Takip kontrolcüsünün çalışma parametreleri"
+                               Style="{StaticResource MutedTextStyle}" />
+
+                    <Border Height="1"
+                            Margin="0,10,0,7"
+                            Background="{DynamicResource BorderBrush}" />
+
+                    <!-- Parameters -->
+
+                    <ItemsControl ItemsSource="{Binding ControlParameters}"
+                                  ItemTemplate="{StaticResource ConfigurationParameterTemplate}"
+                                  HorizontalContentAlignment="Stretch">
+
+                        <ItemsControl.ItemsPanel>
+
+                            <ItemsPanelTemplate>
+
+                                <UniformGrid Columns="2" />
+
+                            </ItemsPanelTemplate>
+
+                        </ItemsControl.ItemsPanel>
+
+                    </ItemsControl>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
+</UserControl>

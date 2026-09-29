@@ -1,0 +1,559 @@
+﻿<Window x:Class="BatX3_HSS_GUI.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:BatX3_HSS_GUI.Client.Views"
+        Title="{Binding ApplicationTitle}"
+        Icon="Resources/Icons/BatX3.ico"
+        Width="1180"
+        Height="760"
+        MinWidth="860"
+        MinHeight="540"
+        WindowStartupLocation="Manual"
+        Background="{DynamicResource ContentBackgroundBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid>
+
+        <!-- ========================================================= -->
+        <!-- MAIN SHELL                                                -->
+        <!-- ========================================================= -->
+
+        <TabControl Style="{StaticResource ShellTabControlStyle}"
+                    ItemContainerStyle="{StaticResource NavigationTabItemStyle}"
+                    BorderThickness="0"
+                    Background="Transparent">
+
+            <TabControl.ItemsPanel>
+
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+
+            </TabControl.ItemsPanel>
+
+            <!-- ===================================================== -->
+            <!-- OPERATION                                             -->
+            <!-- ===================================================== -->
+
+            <TabItem Header="Operasyon">
+
+                <views:OperationView DataContext="{Binding Operation}" />
+
+            </TabItem>
+
+            <!-- ===================================================== -->
+            <!-- CONFIGURATION                                         -->
+            <!-- ===================================================== -->
+
+            <TabItem Header="Konfigürasyon">
+
+                <Grid Margin="24">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+
+                        <TextBlock Text="Konfigürasyon"
+                                   Style="{StaticResource PageTitleTextStyle}" />
+
+                        <TextBlock Margin="0,4,0,0"
+                                   Text="Algılama ve kontrol parametrelerini yapılandırın"
+                                   Style="{StaticResource PageDescriptionTextStyle}" />
+
+                    </StackPanel>
+
+                    <views:ParametersView Grid.Row="1"
+                                          Margin="0,16,0,0"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          DataContext="{Binding Parameters}" />
+
+                </Grid>
+
+            </TabItem>
+
+            <!-- ===================================================== -->
+            <!-- APPLICATION SETTINGS                                  -->
+            <!-- ===================================================== -->
+
+            <TabItem Header="Uygulama Ayarları">
+
+                <Grid Margin="24">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- ================================================= -->
+                    <!-- HEADER                                            -->
+                    <!-- ================================================= -->
+
+                    <StackPanel>
+
+                        <TextBlock Text="Uygulama Ayarları"
+                                   Style="{StaticResource PageTitleTextStyle}" />
+
+                        <TextBlock Margin="0,4,0,0"
+                                   Text="Ağ, gamepad ve kısayol ayarlarını yönetin; sistem durumunu izleyin"
+                                   Style="{StaticResource PageDescriptionTextStyle}" />
+
+                    </StackPanel>
+
+                    <!-- ================================================= -->
+                    <!-- SETTINGS CARD                                     -->
+                    <!-- ================================================= -->
+
+                    <Border Grid.Row="1"
+                            Margin="0,16,0,0"
+                            Style="{StaticResource CardBorderStyle}">
+
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- ========================================= -->
+                            <!-- SETTINGS TABS                             -->
+                            <!-- ========================================= -->
+
+                            <TabControl x:Name="ApplicationSettingsTabControl"
+                                        Grid.Row="0"
+                                        BorderThickness="0"
+                                        Background="Transparent">
+
+                                <!-- NETWORK -->
+
+                                <TabItem Header="Ağ"
+                                         Style="{StaticResource SecondaryTabItemStyle}">
+
+                                    <Grid Margin="0,14,0,0">
+
+                                        <views:NetworkSettingsView
+                                            DataContext="{Binding Settings}" />
+
+                                    </Grid>
+
+                                </TabItem>
+
+                                <!-- GAMEPAD -->
+
+                                <TabItem Header="Gamepad"
+                                         Style="{StaticResource SecondaryTabItemStyle}">
+
+                                    <Grid Margin="0,14,0,0">
+
+                                        <views:GamepadSettingsView
+                                            DataContext="{Binding Settings}" />
+
+                                    </Grid>
+
+                                </TabItem>
+
+                                <!-- SHORTCUTS -->
+
+                                <TabItem Header="Kısayollar"
+                                         Style="{StaticResource SecondaryTabItemStyle}">
+
+                                    <Grid Margin="0,14,0,0">
+
+                                        <views:ShortcutSettingsView
+                                            DataContext="{Binding Settings}" />
+
+                                    </Grid>
+
+                                </TabItem>
+
+                                <!-- SYSTEM STATUS -->
+
+                                <TabItem Header="Sistem Durumu"
+                                         Style="{StaticResource SecondaryTabItemStyle}">
+
+                                    <Grid Margin="0,14,0,0">
+
+                                        <views:DiagnosticsView
+                                            DataContext="{Binding Diagnostics}" />
+
+                                    </Grid>
+
+                                </TabItem>
+
+                            </TabControl>
+
+                            <!-- ================================================= -->
+                            <!-- SHARED SETTINGS STATUS + COMMANDS                  -->
+                            <!-- ================================================= -->
+
+                            <StackPanel Grid.Row="1"
+                                        Margin="0,12,0,0">
+
+                                <StackPanel.Style>
+
+                                    <Style TargetType="StackPanel">
+
+                                        <Setter Property="Visibility"
+                                                Value="Visible" />
+
+                                        <Style.Triggers>
+
+                                            <!--
+                                                Sistem Durumu salt okunur olduğu
+                                                için ortak footer gizlenir.
+                                            -->
+
+                                            <DataTrigger Binding="{Binding SelectedIndex,
+                                                                          ElementName=ApplicationSettingsTabControl}"
+                                                         Value="3">
+
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+
+                                            </DataTrigger>
+
+                                        </Style.Triggers>
+
+                                    </Style>
+
+                                </StackPanel.Style>
+
+                                <!-- ============================================= -->
+                                <!-- STATUS                                        -->
+                                <!-- ============================================= -->
+
+                                <Border Padding="10,8"
+                                        CornerRadius="6"
+                                        BorderThickness="1">
+
+                                    <Border.Style>
+
+                                        <Style TargetType="Border">
+
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+
+                                            <Setter Property="Background"
+                                                    Value="{DynamicResource CorporatePrimarySoftBrush}" />
+
+                                            <Setter Property="BorderBrush"
+                                                    Value="{DynamicResource CorporateBorderBrush}" />
+
+                                            <Style.Triggers>
+
+                                                <DataTrigger Binding="{Binding Settings.StatusMessage}"
+                                                             Value="">
+
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Settings.HasError}"
+                                                             Value="True">
+
+                                                    <Setter Property="Background"
+                                                            Value="{DynamicResource CorporateAccentSoftBrush}" />
+
+                                                    <Setter Property="BorderBrush"
+                                                            Value="{DynamicResource ErrorBrush}" />
+
+                                                </DataTrigger>
+
+                                            </Style.Triggers>
+
+                                        </Style>
+
+                                    </Border.Style>
+
+                                    <Grid>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="4" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Status Accent -->
+
+                                        <Border CornerRadius="2">
+
+                                            <Border.Style>
+
+                                                <Style TargetType="Border">
+
+                                                    <Setter Property="Background"
+                                                            Value="{DynamicResource CorporatePrimaryBrush}" />
+
+                                                    <Style.Triggers>
+
+                                                        <DataTrigger Binding="{Binding Settings.HasError}"
+                                                                     Value="True">
+
+                                                            <Setter Property="Background"
+                                                                    Value="{DynamicResource ErrorBrush}" />
+
+                                                        </DataTrigger>
+
+                                                    </Style.Triggers>
+
+                                                </Style>
+
+                                            </Border.Style>
+
+                                        </Border>
+
+                                        <TextBlock Grid.Column="2"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                   Text="{Binding Settings.StatusMessage}"
+                                                   TextWrapping="Wrap" />
+
+                                    </Grid>
+
+                                </Border>
+
+                                <!-- ============================================= -->
+                                <!-- COMMANDS                                      -->
+                                <!-- ============================================= -->
+
+                                <Grid Margin="0,12,0,0">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               MaxWidth="440"
+                                               Text="Ağ ve giriş ayarları çalışma zamanında uygulanır; başarısızlık durumunda önceki çalışan ayarlara geri dönülür."
+                                               Style="{StaticResource MutedTextStyle}" />
+
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal">
+
+                                        <Button Margin="0,0,8,0"
+                                                Content="Varsayılanlara Dön"
+                                                Command="{Binding Settings.RestoreDefaultsCommand}"
+                                                ToolTip="appsettings.json içinde tanımlı varsayılan değerleri forma yükler."
+                                                Style="{StaticResource SecondaryButtonStyle}" />
+
+                                        <Button Margin="0,0,8,0"
+                                                Content="Yeniden Yükle"
+                                                Command="{Binding Settings.ReloadCommand}"
+                                                ToolTip="Kaydedilmiş ve aktif olan ayarları tekrar yükler."
+                                                Style="{StaticResource SecondaryButtonStyle}" />
+
+                                        <Button Content="Kaydet ve Uygula"
+                                                Command="{Binding Settings.SaveCommand}"
+                                                Style="{StaticResource PrimaryButtonStyle}" />
+
+                                    </StackPanel>
+
+                                </Grid>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </TabItem>
+
+        </TabControl>
+
+        <!-- ========================================================= -->
+        <!-- GLOBAL SYSTEM STATUS                                      -->
+        <!-- ========================================================= -->
+
+        <!--
+            Sidebar artık 220 px olacağı için:
+              eski Width  = 212
+              yeni Width  = 188
+
+              eski Margin = 16
+              yeni Margin = 12
+
+              eski Padding = 12
+              yeni Padding = 10
+
+            Böylece sidebar daralırken footer taşmaz.
+        -->
+
+        <StackPanel Width="188"
+                    Margin="12,0,0,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Panel.ZIndex="10">
+
+            <Border Padding="10"
+                    Background="{DynamicResource SidebarSecondaryBrush}"
+                    CornerRadius="8">
+
+                <StackPanel>
+
+                    <TextBlock Text="SİSTEM DURUMU"
+                               Foreground="{DynamicResource CorporatePrimarySoftBrush}"
+                               FontSize="10"
+                               FontWeight="SemiBold" />
+
+                    <!-- ================================================= -->
+                    <!-- COMMAND                                           -->
+                    <!-- ================================================= -->
+
+                    <Grid Margin="0,8,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Foreground="{DynamicResource CorporatePrimarySoftBrush}"
+                                   FontSize="10"
+                                   Text="Komut" />
+
+                        <TextBlock Grid.Column="1"
+                                   Foreground="White"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Text="{Binding Diagnostics.Command.StateText}" />
+
+                    </Grid>
+
+                    <!-- ================================================= -->
+                    <!-- VIDEO                                             -->
+                    <!-- ================================================= -->
+
+                    <Grid Margin="0,4,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Foreground="{DynamicResource CorporatePrimarySoftBrush}"
+                                   FontSize="10"
+                                   Text="Video" />
+
+                        <TextBlock Grid.Column="1"
+                                   Foreground="White"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Text="{Binding Diagnostics.Video.StateText}" />
+
+                    </Grid>
+
+                    <!-- ================================================= -->
+                    <!-- DETECTION                                         -->
+                    <!-- ================================================= -->
+
+                    <Grid Margin="0,4,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Foreground="{DynamicResource CorporatePrimarySoftBrush}"
+                                   FontSize="10"
+                                   Text="Tespit" />
+
+                        <TextBlock Grid.Column="1"
+                                   Foreground="White"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Text="{Binding Diagnostics.Detection.StateText}" />
+
+                    </Grid>
+
+                    <Border Height="1"
+                            Margin="0,8,0,7"
+                            Background="{DynamicResource CorporatePrimarySoftBrush}"
+                            Opacity="0.18" />
+
+                    <!-- ================================================= -->
+                    <!-- MODE                                              -->
+                    <!-- ================================================= -->
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Foreground="{DynamicResource CorporatePrimarySoftBrush}"
+                                   FontSize="10"
+                                   Text="Mod" />
+
+                        <TextBlock Grid.Column="1"
+                                   Foreground="White"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Text="{Binding Operation.ModeText}" />
+
+                    </Grid>
+
+                    <!-- ================================================= -->
+                    <!-- FPS                                               -->
+                    <!-- ================================================= -->
+
+                    <Grid Margin="0,4,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Foreground="{DynamicResource CorporatePrimarySoftBrush}"
+                                   FontSize="10"
+                                   Text="FPS" />
+
+                        <TextBlock Grid.Column="1"
+                                   Foreground="White"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Text="{Binding Operation.FpsText}" />
+
+                    </Grid>
+
+                </StackPanel>
+
+            </Border>
+
+            <!-- ===================================================== -->
+            <!-- APPLICATION VERSION                                   -->
+            <!-- ===================================================== -->
+
+            <StackPanel Margin="3,6,3,0"
+                        HorizontalAlignment="Right">
+
+                <TextBlock Text="{Binding VersionDisplayText}"
+                           Foreground="#D8DCE8"
+                           FontSize="9"
+                           FontWeight="SemiBold"
+                           TextAlignment="Right"
+                           HorizontalAlignment="Right" />
+
+                <TextBlock Margin="0,1,0,0"
+                           MaxWidth="185"
+                           Text="BAT-X3 Robotik Teknolojileri Geliştirme Kulübü"
+                           Foreground="{DynamicResource CorporateMutedTextBrush}"
+                           FontSize="8"
+                           TextAlignment="Right"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Right" />
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+
+</Window>

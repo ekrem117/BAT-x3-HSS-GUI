@@ -1,0 +1,278 @@
+﻿<UserControl x:Class="BatX3_HSS_GUI.Client.Views.NetworkSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             HorizontalContentAlignment="Stretch"
+             VerticalContentAlignment="Stretch">
+
+    <UserControl.Resources>
+
+        <Style x:Key="SettingsFieldLabelStyle"
+               TargetType="TextBlock">
+
+            <Setter Property="Foreground"
+                    Value="{DynamicResource PrimaryTextBrush}" />
+
+            <Setter Property="FontSize"
+                    Value="11" />
+
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
+
+            <Setter Property="Margin"
+                    Value="0,0,0,5" />
+
+        </Style>
+
+        <Style x:Key="SettingsFieldHintStyle"
+               TargetType="TextBlock">
+
+            <Setter Property="Foreground"
+                    Value="{DynamicResource SecondaryTextBrush}" />
+
+            <Setter Property="FontSize"
+                    Value="10" />
+
+            <Setter Property="TextWrapping"
+                    Value="Wrap" />
+
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  HorizontalContentAlignment="Stretch">
+
+        <StackPanel Margin="0,0,10,4"
+                    HorizontalAlignment="Stretch">
+
+            <Border Style="{StaticResource CompactCardBorderStyle}" HorizontalAlignment="Stretch">
+
+                <StackPanel>
+
+                    <!-- ================================================= -->
+                    <!-- HEADER                                            -->
+                    <!-- ================================================= -->
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+
+                            <TextBlock Text="Ağ Yapılandırması" Style="{StaticResource SectionTitleTextStyle}"/>
+
+                            <TextBlock Margin="0,3,0,0" Text="Komut, video ve tespit kanallarının bağlantı ayarları" Style="{StaticResource MutedTextStyle}"/>
+
+                        </StackPanel>
+
+                        <Border Grid.Column="1" Padding="8,4" VerticalAlignment="Center" Background="{DynamicResource CorporatePrimarySoftBrush}" CornerRadius="5">
+
+                            <TextBlock Text="RUNTIME" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource CorporatePrimaryBrush}"/>
+
+                        </Border>
+
+                    </Grid>
+
+                    <!-- ================================================= -->
+                    <!-- GENERAL NETWORK                                   -->
+                    <!-- ================================================= -->
+
+                    <Border Height="1" Margin="0,10,0,10" Background="{DynamicResource BorderBrush}"/>
+
+                    <TextBlock Text="Genel" Style="{StaticResource CardTitleTextStyle}"/>
+
+                    <Grid Margin="0,8,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Server IP -->
+
+                        <StackPanel Grid.Column="0">
+
+                            <TextBlock Text="Sunucu IP" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                            <TextBox Text="{Binding ServerIp,                                                    UpdateSourceTrigger=PropertyChanged}" ToolTip="Komutların gönderileceği sunucu IP adresi." Style="{StaticResource TextInputStyle}"/>
+
+                            <TextBlock Margin="0,4,0,0" Text="Komut sunucusunun IP adresi" Style="{StaticResource SettingsFieldHintStyle}"/>
+
+                        </StackPanel>
+
+                        <!-- Local Bind IP -->
+
+                        <StackPanel Grid.Column="2">
+
+                            <TextBlock Text="Yerel IP" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                            <TextBox Text="{Binding LocalBindIp,                                                    UpdateSourceTrigger=PropertyChanged}" ToolTip="İstemcinin UDP soketleri için kullanılacak yerel IP adresi." Style="{StaticResource TextInputStyle}"/>
+
+                            <TextBlock Margin="0,4,0,0" Text="İstemcinin bağlanacağı yerel arayüz" Style="{StaticResource SettingsFieldHintStyle}"/>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!-- ================================================= -->
+                    <!-- COMMAND CHANNEL                                   -->
+                    <!-- ================================================= -->
+
+                    <Border Height="1" Margin="0,13,0,10" Background="{DynamicResource BorderBrush}"/>
+
+                    <TextBlock Text="Komut Kanalı" Style="{StaticResource CardTitleTextStyle}"/>
+
+                    <Grid Margin="0,8,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Remote Port -->
+
+                        <StackPanel Grid.Column="0">
+
+                            <TextBlock Text="Uzak Port" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                            <TextBox Text="{Binding CommandRemotePort}" ToolTip="Komut sunucusunun dinlediği UDP portu." Style="{StaticResource TextInputStyle}"/>
+
+                        </StackPanel>
+
+                        <!-- Local Port -->
+
+                        <StackPanel Grid.Column="2">
+
+                            <TextBlock Text="Yerel Port" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                            <TextBox Text="{Binding CommandLocalPort}" ToolTip="Komut cevapları için kullanılacak yerel UDP portu. 0 değeri otomatik port seçimidir." Style="{StaticResource TextInputStyle}"/>
+
+                        </StackPanel>
+
+                        <!-- Timeout -->
+
+                        <StackPanel Grid.Column="4">
+
+                            <TextBlock Text="Yanıt Zaman Aşımı" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                            <TextBox Text="{Binding CommandResponseTimeoutMs}" ToolTip="Komut cevabının bekleneceği maksimum süre." Style="{StaticResource TextInputStyle}"/>
+
+                            <TextBlock Margin="0,4,0,0" Text="Milisaniye" Style="{StaticResource SettingsFieldHintStyle}"/>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!-- ================================================= -->
+                    <!-- VIDEO + DETECTION                                 -->
+                    <!-- ================================================= -->
+
+                    <Border Height="1" Margin="0,13,0,10" Background="{DynamicResource BorderBrush}"/>
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="18"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- ================================================= -->
+                        <!-- VIDEO                                             -->
+                        <!-- ================================================= -->
+
+                        <StackPanel Grid.Column="0">
+
+                            <TextBlock Text="Video Kanalı" Style="{StaticResource CardTitleTextStyle}"/>
+
+                            <Grid Margin="0,8,0,0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Dinleme Portu" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                                    <TextBox Text="{Binding VideoListenPort}" ToolTip="Video UDP paketlerinin dinleneceği yerel port." Style="{StaticResource TextInputStyle}"/>
+
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+
+                                    <TextBlock Text="Alım Tamponu" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                                    <TextBox Text="{Binding VideoReceiveBufferBytes}" ToolTip="Video UDP receive buffer büyüklüğü." Style="{StaticResource TextInputStyle}"/>
+
+                                    <TextBlock Margin="0,4,0,0" Text="Bayt" Style="{StaticResource SettingsFieldHintStyle}"/>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                        <!-- Vertical separator -->
+
+                        <Border Grid.Column="1" Width="1" HorizontalAlignment="Center" Background="{DynamicResource BorderBrush}"/>
+
+                        <!-- ================================================= -->
+                        <!-- DETECTION                                         -->
+                        <!-- ================================================= -->
+
+                        <StackPanel Grid.Column="2">
+
+                            <TextBlock Text="Tespit Kanalı" Style="{StaticResource CardTitleTextStyle}"/>
+
+                            <Grid Margin="0,8,0,0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Dinleme Portu" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                                    <TextBox Text="{Binding DetectionListenPort}" ToolTip="Tespit UDP paketlerinin dinleneceği yerel port." Style="{StaticResource TextInputStyle}"/>
+
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+
+                                    <TextBlock Text="Bayat Veri Süresi" Style="{StaticResource SettingsFieldLabelStyle}"/>
+
+                                    <TextBox Text="{Binding DetectionStaleTimeoutMs}" ToolTip="Tespit verisinin bayat kabul edilmesi için geçmesi gereken süre." Style="{StaticResource TextInputStyle}"/>
+
+                                    <TextBlock Margin="0,4,0,0" Text="Milisaniye" Style="{StaticResource SettingsFieldHintStyle}"/>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
+</UserControl>

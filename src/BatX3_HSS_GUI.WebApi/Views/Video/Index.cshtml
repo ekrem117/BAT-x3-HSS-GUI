@@ -1,0 +1,597 @@
+@{
+    ViewData["Title"] = "Operasyon";
+}
+
+<div class="op-page">
+
+    <div class="op-header">
+        <div>
+            <h1 class="op-title">Operasyon</h1>
+            <p class="op-subtitle">Canlı görev görüntüsü ve operasyon kontrolleri</p>
+        </div>
+
+        <div class="op-status-group">
+            <div class="op-badge">
+                <span class="op-badge-label">MOD</span>
+                <span class="op-badge-value" id="modeStatusText">Bilinmiyor</span>
+            </div>
+            <div class="op-badge">
+                <span class="op-dot op-dot-accent"></span>
+                <span class="op-badge-value" id="linkStatusText">Bilinmiyor</span>
+            </div>
+            <div class="op-badge">
+                <span class="op-dot op-dot-live"></span>
+                <span class="op-badge-value">CANLI GÖRÜNTÜ</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="op-content">
+
+        <div class="op-video-column">
+            <div class="op-video-card">
+                <div class="op-video-frame">
+                    <img id="videoFrame" alt="Turret video feed" />
+                    <canvas id="detectionOverlay"></canvas>
+                </div>
+            </div>
+
+            <div class="op-telemetry-bar">
+                <span class="op-telemetry-title">Kısayollar</span>
+                <span class="op-shortcut-hint">← → ↑ ↓ Pan / Tilt</span>
+                <div class="op-telemetry-spacer"></div>
+                <div class="op-telemetry-item">
+                    <span class="op-telemetry-label">Mühimmat</span>
+                    <span class="op-telemetry-value" id="ammoValueText">—</span>
+                </div>
+                <div class="op-telemetry-sep"></div>
+                <div class="op-telemetry-item">
+                    <span class="op-telemetry-label">Toplam Atış</span>
+                    <span class="op-telemetry-value" id="shotsFiredValueText">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="op-control-column">
+
+            <!-- ================================================= -->
+            <!-- MODE CARD                                         -->
+            <!-- ================================================= -->
+
+            <div class="op-card">
+                <div class="op-card-header">
+                    <span class="op-card-title">Çalışma Modu</span>
+                    <span class="op-card-header-value" id="modeCardText">Bilinmiyor</span>
+                </div>
+
+                <div class="op-card-divider"></div>
+
+                <div class="op-row">
+                    <select id="modeSelect" class="op-select">
+                        <option value="Idle">Bekleme</option>
+                        <option value="Manual">Manuel</option>
+                        <option value="Auto">Otomatik</option>
+                        <option value="LoopDemo">Döngü Demo</option>
+                        <option value="EmergencyStop">Acil Durdurma</option>
+                    </select>
+                    <button id="applyModeButton" class="op-btn op-btn-primary">Uygula</button>
+                </div>
+
+                <p class="op-error-text" id="modeErrorText"></p>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- VISION CARD                                       -->
+            <!-- ================================================= -->
+
+            <div class="op-card">
+                <div class="op-card-header">
+                    <span class="op-card-title">Görüntü İşleme</span>
+                </div>
+
+                <div class="op-card-divider"></div>
+
+                <div class="op-metric-row">
+                    <div class="op-metric">
+                        <span class="op-metric-label">Tespit</span>
+                        <span class="op-metric-value" id="detectionCountValueText">—</span>
+                    </div>
+                    <div class="op-metric-sep"></div>
+                    <div class="op-metric">
+                        <span class="op-metric-label">Çıkarım</span>
+                        <span class="op-metric-value" id="inferenceValueText">—</span>
+                    </div>
+                </div>
+
+                <div class="op-card-divider"></div>
+
+                <span class="op-field-label">Tespit Güven Eşiği</span>
+                <div class="op-row">
+                    <input id="confidenceThresholdInput" class="op-input" type="text" placeholder="0,00 – 1,00" />
+                    <button id="applyConfidenceThresholdButton" class="op-btn op-btn-secondary">Uygula</button>
+                </div>
+                <p class="op-error-text" id="confidenceThresholdErrorText"></p>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- WEAPON CARD                                       -->
+            <!-- ================================================= -->
+
+            <div class="op-card">
+                <div class="op-card-header">
+                    <span class="op-card-title">Silah Kontrolü</span>
+                    <span class="op-status-pill op-status-pill-unknown" id="armedBadge">Bilinmiyor</span>
+                </div>
+
+                <div class="op-card-divider"></div>
+
+                <div class="op-row">
+                    <button id="enableArmedButton" class="op-btn op-btn-secondary">Yetkilendir</button>
+                    <button id="disableArmedButton" class="op-btn op-btn-primary">Güvenliye Al</button>
+                </div>
+
+                <p class="op-error-text" id="armedErrorText"></p>
+
+                <button id="fireButton" class="op-btn op-btn-fire">Ateş Et</button>
+
+                <p class="op-error-text" id="fireErrorText"></p>
+
+                <div class="op-card-divider"></div>
+
+                <div class="op-card-subsection">
+                    <div class="op-row">
+                        <div class="op-field">
+                            <span class="op-field-label">Atış Modu</span>
+                            <select id="fireModeSelect" class="op-select">
+                                <option value="0">Tekli</option>
+                                <option value="1">Seri</option>
+                            </select>
+                        </div>
+                        <div class="op-field">
+                            <span class="op-field-label">Seri Adedi</span>
+                            <select id="burstCountSelect" class="op-select">
+                                @for (int i = 1; i <= 10; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <span class="op-field-label">Silah Seçimi</span>
+                    <select id="weaponSelectionSelect" class="op-select">
+                        <option value="0">Sol</option>
+                        <option value="1">Sağ</option>
+                        <option value="2">Her İkisi</option>
+                    </select>
+
+                    <button id="applyWeaponConfigButton" class="op-btn op-btn-primary" style="margin-top: 7px;">Ayarları Uygula</button>
+
+                    <p class="op-error-text" id="weaponConfigErrorText"></p>
+                    <p class="op-success-text" id="weaponConfigSuccessText"></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.7/dist/browser/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/turretHub")
+            .build();
+
+        const videoFrame = document.getElementById("videoFrame");
+        const overlay = document.getElementById("detectionOverlay");
+        const overlayContext = overlay.getContext("2d");
+
+        connection.on("ReceiveVideoFrame", function (frameId, width, height, jpegBytes) {
+            videoFrame.src = "data:image/jpeg;base64," + jpegBytes;
+
+            // canvas'ın koordinat sistemini frame'in gerçek piksel boyutuna eşitliyoruz
+            if (overlay.width !== width || overlay.height !== height) {
+                overlay.width = width;
+                overlay.height = height;
+            }
+        });
+
+        // Tespit koordinatları modelin çalıştığı sabit çözünürlükte (1920x1080)
+        // geliyor; gerçek video pikseline bu oranla ölçekliyoruz.
+        const DETECTION_SOURCE_WIDTH = 1920;
+        const DETECTION_SOURCE_HEIGHT = 1080;
+
+        const CLASS_NAMES = {
+            0: "Drone / Mini-Micro İHA",
+            1: "F-16",
+            2: "Balistik Füze",
+            3: "Helikopter",
+            4: "Balon"
+        };
+
+        const TEAM_NAMES = {
+            0: "Dost",
+            1: "Düşman",
+            2: "Bilinmiyor"
+        };
+
+        const TEAM_COLORS = {
+            0: "#32cd32",
+            1: "#ff4444",
+            2: "#ffd400"
+        };
+
+        function getClassName(classId) {
+            return CLASS_NAMES[classId] || ("Sınıf " + classId);
+        }
+
+        function getTeamName(teamId) {
+            return TEAM_NAMES[teamId] || ("Takım " + teamId);
+        }
+
+        function getTeamColor(teamId) {
+            return TEAM_COLORS[teamId] || "#ffffff";
+        }
+
+        connection.on("ReceiveDetectionFrame", function (frame) {
+            overlayContext.clearRect(0, 0, overlay.width, overlay.height);
+
+            const scaleX = overlay.width / DETECTION_SOURCE_WIDTH;
+            const scaleY = overlay.height / DETECTION_SOURCE_HEIGHT;
+
+            for (const detection of frame.detections) {
+                const isLocked = frame.lock && frame.lock.trackId === detection.id;
+
+                const x = detection.x * scaleX;
+                const y = detection.y * scaleY;
+                const width = detection.width * scaleX;
+                const height = detection.height * scaleY;
+
+                const color = getTeamColor(detection.teamId);
+
+                overlayContext.strokeStyle = color;
+                overlayContext.lineWidth = isLocked ? 3 : 2;
+                overlayContext.setLineDash(detection.predicted ? [6, 4] : []);
+                overlayContext.strokeRect(x, y, width, height);
+                overlayContext.setLineDash([]);
+
+                const label = getClassName(detection.classId) + " (" + getTeamName(detection.teamId) +
+                    ") " + Math.round(detection.confidence * 100) + "%";
+
+                overlayContext.font = "13px sans-serif";
+                const textWidth = overlayContext.measureText(label).width;
+                const labelY = y > 16 ? y - 16 : y + height + 2;
+
+                overlayContext.fillStyle = "rgba(0, 0, 0, 0.6)";
+                overlayContext.fillRect(x, labelY, textWidth + 6, 16);
+
+                overlayContext.fillStyle = color;
+                overlayContext.fillText(label, x + 3, labelY + 12);
+            }
+        });
+
+        connection.start().catch(function (err) {
+            console.error(err);
+        });
+
+        // ============================================================
+        // STATUS PUSH (ReceiveStatus) - canlı sunucu durumu
+        // ============================================================
+        //
+        // "Dirty" bayrakları: kullanıcı bir alanı düzenlerken (ör. mod
+        // seçip henüz Uygula'ya basmadan) az sonra gelecek bir push'un
+        // o değeri ezmesini engelliyoruz - WPF'teki aynı desenin
+        // (_modeSelectionDirty, _confidenceThresholdDirty, ...) karşılığı.
+
+        let modeDirty = false;
+        let confidenceDirty = false;
+        let weaponConfigDirty = false;
+
+        const MODE_INFO = {
+            0: { key: "Idle", label: "BEKLEME" },
+            1: { key: "Manual", label: "MANUEL" },
+            2: { key: "Auto", label: "OTOMATİK" },
+            3: { key: "LoopDemo", label: "DÖNGÜ DEMO" },
+            4: { key: "EmergencyStop", label: "ACİL DURDURMA" }
+        };
+
+        const LINK_LABELS = {
+            0: "BAĞLANTI YOK",
+            1: "BAĞLI",
+            2: "ZAMAN AŞIMI"
+        };
+
+        function formatNumber(value, digits) {
+            return value === null || value === undefined
+                ? "—"
+                : value.toFixed(digits);
+        }
+
+        const linkStatusText = document.getElementById("linkStatusText");
+        const detectionCountValueText = document.getElementById("detectionCountValueText");
+        const inferenceValueText = document.getElementById("inferenceValueText");
+        const ammoValueText = document.getElementById("ammoValueText");
+        const shotsFiredValueText = document.getElementById("shotsFiredValueText");
+
+        connection.on("ReceiveStatus", function (status) {
+            const modeInfo = MODE_INFO[status.mode];
+            modeStatusText.textContent = modeInfo ? modeInfo.label : "Bilinmiyor";
+            modeCardText.textContent = modeStatusText.textContent;
+
+            if (!modeDirty && !applyModeButton.disabled && modeInfo) {
+                modeSelect.value = modeInfo.key;
+            }
+
+            linkStatusText.textContent = LINK_LABELS[status.link] || "Bilinmiyor";
+
+            detectionCountValueText.textContent =
+                status.detectionCount === null || status.detectionCount === undefined
+                    ? "—"
+                    : status.detectionCount.toString();
+
+            inferenceValueText.textContent =
+                formatNumber(status.inferenceMilliseconds, 1) +
+                (status.inferenceMilliseconds === null || status.inferenceMilliseconds === undefined ? "" : " ms");
+
+            if (!confidenceDirty && !applyConfidenceThresholdButton.disabled &&
+                status.confidenceThreshold !== null && status.confidenceThreshold !== undefined) {
+                confidenceThresholdInput.value = status.confidenceThreshold.toFixed(2);
+            }
+
+            if (!enableArmedButton.disabled && status.armed !== null && status.armed !== undefined) {
+                armedBadge.textContent = status.armed === 1 ? "YETKİLİ" : "GÜVENLİ";
+                armedBadge.className = "op-status-pill " +
+                    (status.armed === 1 ? "op-status-pill-armed" : "op-status-pill-safe");
+            }
+
+            if (!weaponConfigDirty && !applyWeaponConfigButton.disabled) {
+                if (status.fireMode !== null && status.fireMode !== undefined) {
+                    fireModeSelect.value = status.fireMode.toString();
+                }
+                if (status.burstCount !== null && status.burstCount !== undefined) {
+                    burstCountSelect.value = status.burstCount.toString();
+                }
+                if (status.selectedWeapon !== null && status.selectedWeapon !== undefined) {
+                    weaponSelectionSelect.value = status.selectedWeapon.toString();
+                }
+            }
+
+            ammoValueText.textContent =
+                status.ammo === null || status.ammo === undefined ? "—" : status.ammo.toString();
+
+            shotsFiredValueText.textContent =
+                status.shotsFired === null || status.shotsFired === undefined ? "—" : status.shotsFired.toString();
+        });
+
+        // ============================================================
+        // VISION CARD - CONFIDENCE THRESHOLD
+        // ============================================================
+
+        const confidenceThresholdInput = document.getElementById("confidenceThresholdInput");
+        const applyConfidenceThresholdButton = document.getElementById("applyConfidenceThresholdButton");
+        const confidenceThresholdErrorText = document.getElementById("confidenceThresholdErrorText");
+
+        confidenceThresholdInput.addEventListener("input", function () {
+            confidenceDirty = true;
+        });
+
+        applyConfidenceThresholdButton.addEventListener("click", function () {
+            confidenceThresholdErrorText.textContent = "";
+
+            const value = parseFloat(confidenceThresholdInput.value.replace(",", "."));
+
+            if (isNaN(value)) {
+                confidenceThresholdErrorText.textContent =
+                    "Tespit güven eşiği 0 ile 1 arasında geçerli bir sayı olmalıdır.";
+                return;
+            }
+
+            applyConfidenceThresholdButton.disabled = true;
+
+            connection.invoke("SetConfidenceThreshold", value)
+                .then(function () {
+                    confidenceDirty = false;
+                })
+                .catch(function (err) {
+                    confidenceThresholdErrorText.textContent = err.message;
+                })
+                .finally(function () {
+                    applyConfidenceThresholdButton.disabled = false;
+                });
+        });
+
+        // ============================================================
+        // MODE CARD
+        // ============================================================
+
+        const modeSelect = document.getElementById("modeSelect");
+        const applyModeButton = document.getElementById("applyModeButton");
+        const modeErrorText = document.getElementById("modeErrorText");
+        const modeStatusText = document.getElementById("modeStatusText");
+        const modeCardText = document.getElementById("modeCardText");
+
+        modeSelect.addEventListener("change", function () {
+            modeDirty = true;
+        });
+
+        applyModeButton.addEventListener("click", function () {
+            modeErrorText.textContent = "";
+            applyModeButton.disabled = true;
+
+            connection.invoke("SetMode", modeSelect.value)
+                .then(function () {
+                    const modeLabel = modeSelect.options[modeSelect.selectedIndex].text.toUpperCase();
+                    modeStatusText.textContent = modeLabel;
+                    modeCardText.textContent = modeLabel;
+                    modeDirty = false;
+                })
+                .catch(function (err) {
+                    modeErrorText.textContent = err.message;
+                })
+                .finally(function () {
+                    applyModeButton.disabled = false;
+                });
+        });
+
+        // ============================================================
+        // WEAPON CARD - ARM / DISARM
+        // ============================================================
+
+        const enableArmedButton = document.getElementById("enableArmedButton");
+        const disableArmedButton = document.getElementById("disableArmedButton");
+        const armedErrorText = document.getElementById("armedErrorText");
+        const armedBadge = document.getElementById("armedBadge");
+
+        function setArmed(armed) {
+            armedErrorText.textContent = "";
+            enableArmedButton.disabled = true;
+            disableArmedButton.disabled = true;
+
+            connection.invoke("SetArmed", armed)
+                .then(function () {
+                    armedBadge.textContent = armed ? "YETKİLİ" : "GÜVENLİ";
+                    armedBadge.className = "op-status-pill " +
+                        (armed ? "op-status-pill-armed" : "op-status-pill-safe");
+                })
+                .catch(function (err) {
+                    armedErrorText.textContent = err.message;
+                })
+                .finally(function () {
+                    enableArmedButton.disabled = false;
+                    disableArmedButton.disabled = false;
+                });
+        }
+
+        enableArmedButton.addEventListener("click", function () {
+            setArmed(true);
+        });
+
+        disableArmedButton.addEventListener("click", function () {
+            setArmed(false);
+        });
+
+        // ============================================================
+        // WEAPON CARD - FIRE
+        // ============================================================
+
+        const fireButton = document.getElementById("fireButton");
+        const fireErrorText = document.getElementById("fireErrorText");
+
+        fireButton.addEventListener("click", function () {
+            fireErrorText.textContent = "";
+            fireButton.disabled = true;
+
+            connection.invoke("Fire")
+                .catch(function (err) {
+                    fireErrorText.textContent = err.message;
+                })
+                .finally(function () {
+                    fireButton.disabled = false;
+                });
+        });
+
+        // ============================================================
+        // WEAPON CARD - CONFIGURATION
+        // ============================================================
+
+        const fireModeSelect = document.getElementById("fireModeSelect");
+        const burstCountSelect = document.getElementById("burstCountSelect");
+        const weaponSelectionSelect = document.getElementById("weaponSelectionSelect");
+        const applyWeaponConfigButton = document.getElementById("applyWeaponConfigButton");
+        const weaponConfigErrorText = document.getElementById("weaponConfigErrorText");
+        const weaponConfigSuccessText = document.getElementById("weaponConfigSuccessText");
+
+        [fireModeSelect, burstCountSelect, weaponSelectionSelect].forEach(function (select) {
+            select.addEventListener("change", function () {
+                weaponConfigDirty = true;
+            });
+        });
+
+        applyWeaponConfigButton.addEventListener("click", function () {
+            weaponConfigErrorText.textContent = "";
+            weaponConfigSuccessText.textContent = "";
+            applyWeaponConfigButton.disabled = true;
+
+            connection.invoke(
+                "SetWeaponConfiguration",
+                parseInt(fireModeSelect.value, 10),
+                parseInt(burstCountSelect.value, 10),
+                parseInt(weaponSelectionSelect.value, 10))
+                .then(function () {
+                    weaponConfigSuccessText.textContent = "Silah ayarları uygulandı.";
+                    weaponConfigDirty = false;
+                })
+                .catch(function (err) {
+                    weaponConfigErrorText.textContent = err.message;
+                })
+                .finally(function () {
+                    applyWeaponConfigButton.disabled = false;
+                });
+        });
+
+        // ============================================================
+        // MOTION - PAN / TILT (ok tuşları)
+        // ============================================================
+
+        const motionKeys = {
+            ArrowLeft: false,
+            ArrowRight: false,
+            ArrowUp: false,
+            ArrowDown: false
+        };
+
+        let lastPan = 0;
+        let lastTilt = 0;
+
+        function isTypingTarget() {
+            const tag = document.activeElement && document.activeElement.tagName;
+            return tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA";
+        }
+
+        function sendMotion() {
+            const pan = (motionKeys.ArrowRight ? 1 : 0) - (motionKeys.ArrowLeft ? 1 : 0);
+            const tilt = (motionKeys.ArrowUp ? 1 : 0) - (motionKeys.ArrowDown ? 1 : 0);
+
+            if (pan === lastPan && tilt === lastTilt) {
+                return;
+            }
+
+            lastPan = pan;
+            lastTilt = tilt;
+
+            connection.invoke("SetMotion", pan, tilt).catch(function (err) {
+                console.error(err);
+            });
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if (!(event.key in motionKeys) || isTypingTarget()) {
+                return;
+            }
+
+            event.preventDefault();
+            motionKeys[event.key] = true;
+            sendMotion();
+        });
+
+        document.addEventListener("keyup", function (event) {
+            if (!(event.key in motionKeys)) {
+                return;
+            }
+
+            motionKeys[event.key] = false;
+            sendMotion();
+        });
+
+        window.addEventListener("blur", function () {
+            motionKeys.ArrowLeft = false;
+            motionKeys.ArrowRight = false;
+            motionKeys.ArrowUp = false;
+            motionKeys.ArrowDown = false;
+            sendMotion();
+        });
+    </script>
+}

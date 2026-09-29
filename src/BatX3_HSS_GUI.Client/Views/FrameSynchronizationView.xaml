@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="BatX3_HSS_GUI.Client.Views.FrameSynchronizationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel>
+
+        <TextBlock Text="Frame Synchronization"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,16" />
+
+        <Border Padding="20"
+                BorderThickness="1">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="220" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Margin="0,0,0,10"
+                           Text="Video Frame ID" />
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           FontWeight="SemiBold"
+                           Text="{Binding FrameId}" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0,0,0,10"
+                           Text="Detection Frame ID" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           FontWeight="SemiBold"
+                           Text="{Binding DetectionFrameId}" />
+
+                <TextBlock Grid.Row="2"
+                           Margin="0,0,0,10"
+                           Text="Has Detection" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="1"
+                           FontWeight="SemiBold"
+                           Text="{Binding HasDetection}" />
+
+                <TextBlock Grid.Row="3"
+                           Margin="0,0,0,10"
+                           Text="Matched Frames" />
+
+                <TextBlock Grid.Row="3"
+                           Grid.Column="1"
+                           FontWeight="SemiBold"
+                           Text="{Binding MatchedFrameCount}" />
+
+                <TextBlock Grid.Row="4"
+                           Text="Video Only Frames" />
+
+                <TextBlock Grid.Row="4"
+                           Grid.Column="1"
+                           FontWeight="SemiBold"
+                           Text="{Binding VideoOnlyFrameCount}" />
+
+            </Grid>
+
+        </Border>
+
+        <TextBlock Margin="0,12,0,0"
+                   FontWeight="SemiBold"
+                   Text="{Binding StatusText}" />
+
+    </StackPanel>
+
+</UserControl>

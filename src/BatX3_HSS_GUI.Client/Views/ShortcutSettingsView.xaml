@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="BatX3_HSS_GUI.Client.Views.ShortcutSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             HorizontalContentAlignment="Stretch"
+             VerticalContentAlignment="Stretch">
+
+    <UserControl.Resources>
+
+        <Style x:Key="SettingsFieldLabelStyle"
+               TargetType="TextBlock">
+
+            <Setter Property="Foreground"
+                    Value="{DynamicResource PrimaryTextBrush}" />
+
+            <Setter Property="FontSize"
+                    Value="11" />
+
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
+
+            <Setter Property="Margin"
+                    Value="0,0,0,5" />
+
+        </Style>
+
+        <Style x:Key="SettingsFieldHintStyle"
+               TargetType="TextBlock">
+
+            <Setter Property="Foreground"
+                    Value="{DynamicResource SecondaryTextBrush}" />
+
+            <Setter Property="FontSize"
+                    Value="10" />
+
+            <Setter Property="TextWrapping"
+                    Value="Wrap" />
+
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  HorizontalContentAlignment="Stretch">
+
+        <StackPanel Margin="0,0,10,4"
+                    HorizontalAlignment="Stretch">
+
+            <Border Style="{StaticResource CompactCardBorderStyle}" HorizontalAlignment="Stretch">
+
+                <StackPanel>
+
+                    <!-- Header -->
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+
+                            <TextBlock Text="Klavye Kısayolları" Style="{StaticResource SectionTitleTextStyle}"/>
+
+                            <TextBlock Margin="0,3,0,0" Text="Değiştir'e basın ve kullanmak istediğiniz tuş veya tuş kombinasyonuna basın." Style="{StaticResource MutedTextStyle}"/>
+
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Kaydet ve Uygula sonrasında etkinleşir" Style="{StaticResource SettingsFieldHintStyle}"/>
+
+                    </Grid>
+
+                    <Border Height="1" Margin="0,10,0,8" Background="{DynamicResource BorderBrush}"/>
+
+                    <!-- ================================================= -->
+                    <!-- SHORTCUT ROWS                                     -->
+                    <!-- ================================================= -->
+
+                    <ItemsControl ItemsSource="{Binding Shortcuts}" HorizontalContentAlignment="Stretch">
+
+                        <ItemsControl.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <Border Margin="0,0,0,5" Padding="10,7" HorizontalAlignment="Stretch" Background="{DynamicResource SurfaceSecondaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6">
+
+                                    <Grid>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Action -->
+
+                                        <StackPanel VerticalAlignment="Center">
+
+                                            <TextBlock Text="{Binding ShortDisplayName}" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                                            <TextBlock Margin="0,2,0,0" Text="{Binding ActionId}" FontSize="9" Foreground="{DynamicResource SecondaryTextBrush}"/>
+
+                                        </StackPanel>
+
+                                        <!-- Shortcut assignment -->
+
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+
+                                            <!-- Current shortcut -->
+
+                                            <Border MinWidth="118" Height="30" Padding="9,0" VerticalAlignment="Center" BorderThickness="1" CornerRadius="5">
+
+                                                <Border.Style>
+
+                                                    <Style TargetType="Border">
+
+                                                        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+
+                                                        <Style.Triggers>
+
+                                                            <DataTrigger Binding="{Binding IsCapturing}" Value="True">
+
+                                                                <Setter Property="Background" Value="{DynamicResource CorporateAccentSoftBrush}"/>
+
+                                                                <Setter Property="BorderBrush" Value="{DynamicResource CorporateAccentBrush}"/>
+
+                                                            </DataTrigger>
+
+                                                        </Style.Triggers>
+
+                                                    </Style>
+
+                                                </Border.Style>
+
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Text="{Binding ShortcutDisplayText}">
+
+                                                    <TextBlock.Style>
+
+                                                        <Style TargetType="TextBlock">
+
+                                                            <Setter Property="Foreground" Value="{DynamicResource CorporatePrimaryBrush}"/>
+
+                                                            <Style.Triggers>
+
+                                                                <DataTrigger Binding="{Binding IsCapturing}" Value="True">
+
+                                                                    <Setter Property="Foreground" Value="{DynamicResource CorporateAccentBrush}"/>
+
+                                                                </DataTrigger>
+
+                                                            </Style.Triggers>
+
+                                                        </Style>
+
+                                                    </TextBlock.Style>
+
+                                                </TextBlock>
+
+                                            </Border>
+
+                                            <!-- Change / cancel -->
+
+                                            <Button Margin="8,0,0,0" MinWidth="72" Content="{Binding CaptureButtonText}" Command="{Binding DataContext.ToggleShortcutCaptureCommand,                                                         RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Style="{StaticResource CompactSecondaryButtonStyle}"/>
+
+                                        </StackPanel>
+
+                                    </Grid>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+                    <!-- Capture hint -->
+
+                    <TextBlock Margin="2,5,0,0" Text="Ctrl, Alt, Shift ve Win tuşları ana tuşla birlikte otomatik olarak algılanır. Esc ile atama iptal edilir." Style="{StaticResource SettingsFieldHintStyle}"/>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
+</UserControl>

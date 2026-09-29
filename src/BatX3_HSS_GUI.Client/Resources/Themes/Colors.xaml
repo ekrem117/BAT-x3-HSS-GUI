@@ -1,0 +1,226 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ============================================================= -->
+    <!-- Corporate Palette                                             -->
+    <!-- ============================================================= -->
+
+    <Color x:Key="CorporatePrimaryColor">
+        #0C2C60
+    </Color>
+
+    <Color x:Key="CorporatePrimaryDarkColor">
+        #082149
+    </Color>
+
+    <Color x:Key="CorporatePrimarySoftColor">
+        #E8EDF7
+    </Color>
+
+    <Color x:Key="CorporateAccentColor">
+        #F04E2B
+    </Color>
+
+    <Color x:Key="CorporateAccentDarkColor">
+        #D94020
+    </Color>
+
+    <Color x:Key="CorporateAccentSoftColor">
+        #FDEBE7
+    </Color>
+
+    <Color x:Key="CorporateSurfaceColor">
+        #FFFFFF
+    </Color>
+
+    <Color x:Key="CorporatePageBackgroundColor">
+        #F6F7FB
+    </Color>
+
+    <Color x:Key="CorporateBorderColor">
+        #D8DCE8
+    </Color>
+
+    <Color x:Key="CorporateTextColor">
+        #1F2433
+    </Color>
+
+    <Color x:Key="CorporateMutedTextColor">
+        #6E7280
+    </Color>
+
+    <Color x:Key="CorporateDisabledColor">
+        #B8BDCC
+    </Color>
+
+    <!-- ============================================================= -->
+    <!-- Runtime Status                                                -->
+    <!-- ============================================================= -->
+
+    <Color x:Key="StatusOkColor">
+        #2EAD4B
+    </Color>
+
+    <Color x:Key="StatusErrorColor">
+        #D92D20
+    </Color>
+
+    <Color x:Key="StatusWarningColor">
+        #F59E0B
+    </Color>
+
+    <Color x:Key="StatusOkSoftColor">
+        #EAF7EE
+    </Color>
+
+    <Color x:Key="StatusInactiveSoftColor">
+        #F2F4F7
+    </Color>
+
+    <Color x:Key="StatusWarningSoftColor">
+        #FFF7E6
+    </Color>
+
+    <!-- ============================================================= -->
+    <!-- Corporate Brushes                                             -->
+    <!-- ============================================================= -->
+
+    <SolidColorBrush x:Key="CorporatePrimaryBrush"
+                     Color="{StaticResource CorporatePrimaryColor}" />
+
+    <SolidColorBrush x:Key="CorporatePrimaryDarkBrush"
+                     Color="{StaticResource CorporatePrimaryDarkColor}" />
+
+    <SolidColorBrush x:Key="CorporatePrimarySoftBrush"
+                     Color="{StaticResource CorporatePrimarySoftColor}" />
+
+    <SolidColorBrush x:Key="CorporateAccentBrush"
+                     Color="{StaticResource CorporateAccentColor}" />
+
+    <SolidColorBrush x:Key="CorporateAccentDarkBrush"
+                     Color="{StaticResource CorporateAccentDarkColor}" />
+
+    <SolidColorBrush x:Key="CorporateAccentSoftBrush"
+                     Color="{StaticResource CorporateAccentSoftColor}" />
+
+    <SolidColorBrush x:Key="CorporateSurfaceBrush"
+                     Color="{StaticResource CorporateSurfaceColor}" />
+
+    <SolidColorBrush x:Key="CorporatePageBackgroundBrush"
+                     Color="{StaticResource CorporatePageBackgroundColor}" />
+
+    <SolidColorBrush x:Key="CorporateBorderBrush"
+                     Color="{StaticResource CorporateBorderColor}" />
+
+    <SolidColorBrush x:Key="CorporateTextBrush"
+                     Color="{StaticResource CorporateTextColor}" />
+
+    <SolidColorBrush x:Key="CorporateMutedTextBrush"
+                     Color="{StaticResource CorporateMutedTextColor}" />
+
+    <SolidColorBrush x:Key="CorporateDisabledBrush"
+                     Color="{StaticResource CorporateDisabledColor}" />
+
+    <SolidColorBrush x:Key="StatusOkBrush"
+                     Color="{StaticResource StatusOkColor}" />
+
+    <SolidColorBrush x:Key="StatusErrorBrush"
+                     Color="{StaticResource StatusErrorColor}" />
+
+    <SolidColorBrush x:Key="StatusWarningBrush"
+                     Color="{StaticResource StatusWarningColor}" />
+
+    <SolidColorBrush x:Key="StatusOkSoftBrush"
+                     Color="{StaticResource StatusOkSoftColor}" />
+
+    <SolidColorBrush x:Key="StatusInactiveSoftBrush"
+                     Color="{StaticResource StatusInactiveSoftColor}" />
+
+    <SolidColorBrush x:Key="StatusWarningSoftBrush"
+                     Color="{StaticResource StatusWarningSoftColor}" />
+
+    <!-- ============================================================= -->
+    <!-- BAT-X3 Semantic Brushes                                       -->
+    <!-- ============================================================= -->
+
+    <SolidColorBrush x:Key="SidebarBackgroundBrush"
+                     Color="{StaticResource CorporatePrimaryColor}" />
+
+    <SolidColorBrush x:Key="SidebarSecondaryBrush"
+                     Color="{StaticResource CorporatePrimaryDarkColor}" />
+
+    <SolidColorBrush x:Key="SidebarHoverBrush"
+                     Color="{StaticResource CorporatePrimaryDarkColor}" />
+
+    <SolidColorBrush x:Key="SidebarSelectedBrush"
+                     Color="{StaticResource CorporatePrimaryDarkColor}" />
+
+    <SolidColorBrush x:Key="AccentBrush"
+                     Color="{StaticResource CorporateAccentColor}" />
+
+    <SolidColorBrush x:Key="AccentHoverBrush"
+                     Color="{StaticResource CorporateAccentDarkColor}" />
+
+    <SolidColorBrush x:Key="AccentPressedBrush"
+                     Color="{StaticResource CorporateAccentDarkColor}" />
+
+    <SolidColorBrush x:Key="ContentBackgroundBrush"
+                     Color="{StaticResource CorporatePageBackgroundColor}" />
+
+    <SolidColorBrush x:Key="SurfaceBrush"
+                     Color="{StaticResource CorporateSurfaceColor}" />
+
+    <SolidColorBrush x:Key="SurfaceSecondaryBrush"
+                     Color="{StaticResource CorporatePageBackgroundColor}" />
+
+    <SolidColorBrush x:Key="PrimaryTextBrush"
+                     Color="{StaticResource CorporateTextColor}" />
+
+    <SolidColorBrush x:Key="SecondaryTextBrush"
+                     Color="{StaticResource CorporateMutedTextColor}" />
+
+    <SolidColorBrush x:Key="MutedTextBrush"
+                     Color="{StaticResource CorporateDisabledColor}" />
+
+    <SolidColorBrush x:Key="BorderBrush"
+                     Color="{StaticResource CorporateBorderColor}" />
+
+    <SolidColorBrush x:Key="InputBorderFocusedBrush"
+                     Color="{StaticResource CorporatePrimaryColor}" />
+
+    <SolidColorBrush x:Key="DisabledBrush"
+                     Color="{StaticResource CorporateDisabledColor}" />
+
+    <SolidColorBrush x:Key="SuccessBrush"
+                     Color="{StaticResource StatusOkColor}" />
+
+    <SolidColorBrush x:Key="SuccessBackgroundBrush"
+                     Color="{StaticResource StatusOkSoftColor}" />
+
+    <SolidColorBrush x:Key="WarningBrush"
+                     Color="{StaticResource StatusWarningColor}" />
+
+    <SolidColorBrush x:Key="WarningBackgroundBrush"
+                     Color="{StaticResource StatusWarningSoftColor}" />
+
+    <SolidColorBrush x:Key="ErrorBrush"
+                     Color="{StaticResource StatusErrorColor}" />
+
+    <SolidColorBrush x:Key="ErrorBackgroundBrush"
+                     Color="{StaticResource CorporateAccentSoftColor}" />
+
+    <SolidColorBrush x:Key="NeutralStatusBrush"
+                     Color="{StaticResource CorporateMutedTextColor}" />
+
+    <SolidColorBrush x:Key="NeutralStatusBackgroundBrush"
+                     Color="{StaticResource StatusInactiveSoftColor}" />
+
+    <!-- Compatibility aliases -->
+
+    <SolidColorBrush x:Key="NeutralBrush"
+                     Color="{StaticResource CorporateMutedTextColor}" />
+
+    <SolidColorBrush x:Key="NeutralBackgroundBrush"
+                     Color="{StaticResource StatusInactiveSoftColor}" />
+
+</ResourceDictionary>

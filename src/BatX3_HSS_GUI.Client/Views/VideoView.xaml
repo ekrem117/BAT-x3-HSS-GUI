@@ -1,0 +1,166 @@
+﻿<UserControl x:Class="BatX3_HSS_GUI.Client.Views.VideoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:videoControls="clr-namespace:BatX3_HSS_GUI.Client.Controls.Video">
+
+    <Grid Background="Black"
+          ClipToBounds="True">
+
+        <Viewbox Stretch="Uniform"
+                 StretchDirection="Both">
+
+            <Grid Width="{Binding FrameWidth}"
+                  Height="{Binding FrameHeight}"
+                  Background="Black"
+                  ClipToBounds="True">
+
+                <!-- ================================================= -->
+                <!-- VIDEO FRAME                                       -->
+                <!-- ================================================= -->
+
+                <Image Source="{Binding Frame}"
+                       Stretch="Fill"
+                       SnapsToDevicePixels="True" />
+
+                <!-- ================================================= -->
+                <!-- DETECTION OVERLAY                                 -->
+                <!-- ================================================= -->
+
+                <videoControls:DetectionOverlaySurface
+                    Targets="{Binding Overlays}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsHitTestVisible="False" />
+
+                <!-- ================================================= -->
+                <!-- CAMERA REFERENCE INDICATOR                        -->
+                <!-- Pasif kamera hizalama / referans işareti          -->
+                <!-- ================================================= -->
+
+                <Grid Width="52"
+                      Height="52"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsHitTestVisible="False"
+                      Opacity="0.58">
+
+                    <Grid.RenderTransform>
+
+                        <TranslateTransform
+                            X="{Binding ReferenceMarkerOffsetX}"
+                            Y="{Binding ReferenceMarkerOffsetY}" />
+
+                    </Grid.RenderTransform>
+
+                    <!--
+                        Koyu arka katman:
+                        Açık ve parlak görüntüler üzerinde görünürlüğü
+                        korur.
+                    -->
+
+                    <Ellipse Width="18"
+                             Height="18"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Stroke="Black"
+                             StrokeThickness="3"
+                             Opacity="0.55" />
+
+                    <Rectangle Width="3"
+                               Height="12"
+                               Margin="0,0,0,34"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="Black"
+                               Opacity="0.55" />
+
+                    <Rectangle Width="3"
+                               Height="12"
+                               Margin="0,34,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="Black"
+                               Opacity="0.55" />
+
+                    <Rectangle Width="12"
+                               Height="3"
+                               Margin="0,0,34,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="Black"
+                               Opacity="0.55" />
+
+                    <Rectangle Width="12"
+                               Height="3"
+                               Margin="34,0,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="Black"
+                               Opacity="0.55" />
+
+                    <!--
+                        Açık ön katman:
+                        Gözü yormayan yarı saydam merkez referansı.
+                    -->
+
+                    <Ellipse Width="18"
+                             Height="18"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Stroke="White"
+                             StrokeThickness="1.4" />
+
+                    <!-- Üst -->
+
+                    <Rectangle Width="1.4"
+                               Height="11"
+                               Margin="0,0,0,34"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="White" />
+
+                    <!-- Alt -->
+
+                    <Rectangle Width="1.4"
+                               Height="11"
+                               Margin="0,34,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="White" />
+
+                    <!-- Sol -->
+
+                    <Rectangle Width="11"
+                               Height="1.4"
+                               Margin="0,0,34,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="White" />
+
+                    <!-- Sağ -->
+
+                    <Rectangle Width="11"
+                               Height="1.4"
+                               Margin="34,0,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="White" />
+
+                    <!-- Hassas merkez noktası -->
+
+                    <Ellipse Width="2.8"
+                             Height="2.8"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Fill="White"
+                             Opacity="0.85" />
+
+                </Grid>
+
+            </Grid>
+
+        </Viewbox>
+
+    </Grid>
+
+</UserControl>

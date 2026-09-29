@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\BatX3_HSS_GUI.Domain\BatX3_HSS_GUI.Domain.csproj" />
+    <ProjectReference Include="..\BatX3_HSS_GUI.Application\BatX3_HSS_GUI.Application.csproj" />
+    <ProjectReference Include="..\BatX3_HSS_GUI.Infrastructure\BatX3_HSS_GUI.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,100 @@
+@model BatX3_HSS_GUI.Application.Configuration.NetworkSettings
+
+@{
+    ViewData["Title"] = "Ağ Ayarları";
+    bool hasError = TempData["HasError"] as bool? ?? false;
+    string? statusMessage = TempData["StatusMessage"] as string;
+}
+
+<div class="op-page">
+
+    <div class="op-header">
+        <div>
+            <h1 class="op-title">Ağ Yapılandırması</h1>
+            <p class="op-subtitle">Komut, video ve tespit kanallarının bağlantı ayarları</p>
+        </div>
+        <span class="op-card-tag">RUNTIME</span>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(statusMessage))
+    {
+        <p class="@(hasError ? "op-error-text" : "op-success-text")" style="margin-top: 10px; white-space: pre-line; font-size: 12px;">@statusMessage</p>
+    }
+
+    <form asp-action="Save" method="post" class="op-card" style="margin-top: 14px;">
+
+        <span class="op-card-title">Genel</span>
+        <div class="op-card-divider"></div>
+
+        <div class="op-row">
+            <div class="op-field">
+                <span class="op-field-label">Sunucu IP</span>
+                <input asp-for="ServerIp" class="op-input" />
+                <span class="op-telemetry-label" style="margin-top:2px;">Komut sunucusunun IP adresi</span>
+            </div>
+            <div class="op-field">
+                <span class="op-field-label">Yerel IP</span>
+                <input asp-for="LocalBindIp" class="op-input" />
+                <span class="op-telemetry-label" style="margin-top:2px;">İstemcinin bağlanacağı yerel arayüz</span>
+            </div>
+        </div>
+
+        <div class="op-card-divider"></div>
+        <span class="op-card-title">Komut Kanalı</span>
+
+        <div class="op-row" style="margin-top: 8px;">
+            <div class="op-field">
+                <span class="op-field-label">Uzak Port</span>
+                <input asp-for="Command.RemotePort" class="op-input" />
+            </div>
+            <div class="op-field">
+                <span class="op-field-label">Yerel Port</span>
+                <input asp-for="Command.LocalPort" class="op-input" />
+            </div>
+            <div class="op-field">
+                <span class="op-field-label">Yanıt Zaman Aşımı (ms)</span>
+                <input asp-for="Command.ResponseTimeoutMs" class="op-input" />
+            </div>
+        </div>
+
+        <div class="op-card-divider"></div>
+
+        <div class="op-row">
+            <div class="op-field">
+                <span class="op-card-title">Video Kanalı</span>
+                <div class="op-row" style="margin-top: 8px;">
+                    <div class="op-field">
+                        <span class="op-field-label">Dinleme Portu</span>
+                        <input asp-for="Video.ListenPort" class="op-input" />
+                    </div>
+                    <div class="op-field">
+                        <span class="op-field-label">Alım Tamponu (bayt)</span>
+                        <input asp-for="Video.ReceiveBufferBytes" class="op-input" />
+                    </div>
+                </div>
+            </div>
+            <div class="op-field">
+                <span class="op-card-title">Tespit Kanalı</span>
+                <div class="op-row" style="margin-top: 8px;">
+                    <div class="op-field">
+                        <span class="op-field-label">Dinleme Portu</span>
+                        <input asp-for="Detection.ListenPort" class="op-input" />
+                    </div>
+                    <div class="op-field">
+                        <span class="op-field-label">Bayat Veri Süresi (ms)</span>
+                        <input asp-for="Detection.StaleTimeoutMs" class="op-input" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="op-row" style="margin-top: 14px;">
+            <button type="submit" class="op-btn op-btn-primary">Kaydet</button>
+        </div>
+    </form>
+
+    <form asp-action="RestoreDefaults" method="post" style="margin-top: 8px;">
+        <button type="submit" class="op-btn op-btn-secondary">Varsayılanlara Dön</button>
+    </form>
+
+</div>

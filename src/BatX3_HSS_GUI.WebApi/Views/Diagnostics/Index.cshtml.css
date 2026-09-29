@@ -1,0 +1,66 @@
+/* Ortak kart/buton/rozet stilleri wwwroot/css/operator-theme.css içinde. */
+
+.diag-channel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+@media (max-width: 820px) {
+    .diag-channel-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.diag-channel-card {
+    background: var(--op-surface-alt);
+}
+
+.diag-endpoint {
+    margin: 6px 0 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--op-accent);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.diag-stat-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.diag-stat-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.diag-stat {
+    flex: 1;
+    min-width: 120px;
+    background: var(--op-surface-alt);
+    border: 1px solid var(--op-border);
+    border-radius: 7px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.diag-stat-accent {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: var(--op-accent);
+}
+
+.diag-stat-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--op-text);
+}
+
+.diag-stat-accent .diag-stat-value {
+    color: var(--op-accent);
+}

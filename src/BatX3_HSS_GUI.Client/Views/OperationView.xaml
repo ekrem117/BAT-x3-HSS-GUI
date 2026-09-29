@@ -1,0 +1,864 @@
+﻿<UserControl x:Class="BatX3_HSS_GUI.Client.Views.OperationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:BatX3_HSS_GUI.Client.Views">
+
+    <UserControl.Resources>
+
+        <Style x:Key="WeaponComboBoxStyle"
+               TargetType="ComboBox"
+               BasedOn="{StaticResource ComboInputStyle}">
+
+            <Style.Triggers>
+
+                <DataTrigger Binding="{Binding Weapon.IsConfigurationBusy}"
+                             Value="True">
+
+                    <Setter Property="IsEnabled"
+                            Value="False" />
+
+                </DataTrigger>
+
+            </Style.Triggers>
+
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- ============================================================= -->
+    <!-- OPERATION PAGE                                                -->
+    <!-- ============================================================= -->
+
+    <Grid Margin="18">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ========================================================= -->
+        <!-- PAGE HEADER                                               -->
+        <!-- ========================================================= -->
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- ===================================================== -->
+            <!-- TITLE                                                 -->
+            <!-- ===================================================== -->
+
+            <StackPanel>
+
+                <TextBlock Text="Operasyon"
+                           Style="{StaticResource PageTitleTextStyle}" />
+
+                <TextBlock Margin="0,4,0,0"
+                           Text="Canlı görev görüntüsü ve operasyon kontrolleri"
+                           Style="{StaticResource PageDescriptionTextStyle}" />
+
+            </StackPanel>
+
+            <!-- ===================================================== -->
+            <!-- GLOBAL STATUS                                         -->
+            <!-- ===================================================== -->
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+
+                <!-- MODE -->
+
+                <Border Margin="0,0,8,0"
+                        Padding="10,5"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="7">
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Text="MOD" />
+
+                        <TextBlock Margin="7,0,0,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   Text="{Binding ModeText}" />
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- CONNECTION -->
+
+                <Border Margin="0,0,8,0"
+                        Padding="10,5"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="7">
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+
+                        <Ellipse Width="6"
+                                 Height="6"
+                                 Margin="0,0,7,0"
+                                 VerticalAlignment="Center"
+                                 Fill="{DynamicResource AccentBrush}" />
+
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   Text="{Binding LinkText}" />
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- LIVE VIDEO -->
+
+                <Border Padding="10,5"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="7">
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+
+                        <Ellipse Width="7"
+                                 Height="7"
+                                 Margin="0,0,7,0"
+                                 VerticalAlignment="Center"
+                                 Fill="#F04438" />
+
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="11"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   Text="CANLI GÖRÜNTÜ" />
+
+                    </StackPanel>
+
+                </Border>
+
+            </StackPanel>
+
+        </Grid>
+
+        <!-- ========================================================= -->
+        <!-- CONTENT                                                   -->
+        <!-- ========================================================= -->
+
+        <Grid Grid.Row="1"
+              Margin="0,12,0,0">
+
+            <Grid.ColumnDefinitions>
+
+                <!-- Main video area -->
+
+                <ColumnDefinition Width="*" />
+
+                <!-- Column spacing -->
+
+                <ColumnDefinition Width="12" />
+
+                <!-- Right control panel -->
+
+                <ColumnDefinition Width="240" />
+
+            </Grid.ColumnDefinitions>
+
+            <!-- ===================================================== -->
+            <!-- LEFT / VIDEO COLUMN                                   -->
+            <!-- ===================================================== -->
+
+            <Grid Grid.Column="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- ================================================= -->
+                <!-- VIDEO                                             -->
+                <!-- ================================================= -->
+
+                <Border Grid.Row="0"
+                        Padding="5"
+                        Style="{StaticResource CardBorderStyle}">
+
+                    <Border Background="Black"
+                            CornerRadius="7"
+                            ClipToBounds="True">
+
+                        <views:VideoView DataContext="{Binding Video}" />
+
+                    </Border>
+
+                </Border>
+
+                <!-- ================================================= -->
+                <!-- SHORTCUTS + WEAPON TELEMETRY                      -->
+                <!-- ================================================= -->
+
+                <Border Grid.Row="1"
+                        Margin="0,6,0,0"
+                        Padding="2,6,2,0"
+                        Background="Transparent"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,1,0,0">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+
+                            <!-- Shortcut title -->
+
+                            <ColumnDefinition Width="Auto" />
+
+                            <!-- Spacing -->
+
+                            <ColumnDefinition Width="12" />
+
+                            <!-- Shortcuts -->
+
+                            <ColumnDefinition Width="*" />
+
+                            <!-- Weapon telemetry -->
+
+                            <ColumnDefinition Width="Auto" />
+
+                        </Grid.ColumnDefinitions>
+
+                        <!-- ========================================= -->
+                        <!-- SHORTCUT TITLE                            -->
+                        <!-- ========================================= -->
+
+                        <TextBlock Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   Text="Kısayollar"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                        <!-- ========================================= -->
+                        <!-- SHORTCUT LIST                             -->
+                        <!-- ========================================= -->
+
+                        <ItemsControl Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      ItemsSource="{Binding DataContext.Settings.Shortcuts,
+                                          RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+
+                            <ItemsControl.ItemsPanel>
+
+                                <ItemsPanelTemplate>
+
+                                    <WrapPanel VerticalAlignment="Center" />
+
+                                </ItemsPanelTemplate>
+
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+
+                                <DataTemplate>
+
+                                    <StackPanel Margin="0,0,12,0"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+
+                                        <!-- Key -->
+
+                                        <Border MinWidth="22"
+                                                Height="20"
+                                                Padding="4,0"
+                                                VerticalAlignment="Center"
+                                                Background="{DynamicResource SurfaceBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4">
+
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="9"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource CorporatePrimaryBrush}"
+                                                       Text="{Binding ShortcutText}" />
+
+                                        </Border>
+
+                                        <!-- Action -->
+
+                                        <TextBlock Margin="4,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="9"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   Text="{Binding ShortDisplayName}" />
+
+                                    </StackPanel>
+
+                                </DataTemplate>
+
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                        <!-- ========================================= -->
+                        <!-- WEAPON TELEMETRY                          -->
+                        <!-- ========================================= -->
+
+                        <Border Grid.Column="3"
+                                Margin="12,0,0,0"
+                                Padding="12,0,2,0"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1,0,0,0">
+
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+
+                                <!-- Ammo -->
+
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               FontSize="9"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Text="Mühimmat" />
+
+                                    <TextBlock Margin="6,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="11"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               Text="{Binding Weapon.AmmoText}" />
+
+                                </StackPanel>
+
+                                <!-- Separator -->
+
+                                <Border Width="1"
+                                        Height="18"
+                                        Margin="12,0"
+                                        VerticalAlignment="Center"
+                                        Background="{DynamicResource BorderBrush}" />
+
+                                <!-- Total Shots -->
+
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               FontSize="9"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Text="Toplam Atış" />
+
+                                    <TextBlock Margin="6,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="11"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               Text="{Binding Weapon.ShotsFiredText}" />
+
+                                </StackPanel>
+
+                            </StackPanel>
+
+                        </Border>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+            <!-- ===================================================== -->
+            <!-- RIGHT CONTROL COLUMN                                  -->
+            <!-- ===================================================== -->
+
+            <ScrollViewer Grid.Column="2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+
+                <StackPanel Margin="0,0,5,0">
+
+                    <!-- ================================================= -->
+                    <!-- OPERATING MODE                                    -->
+                    <!-- ================================================= -->
+
+                    <Border Style="{StaticResource CompactCardBorderStyle}">
+
+                        <StackPanel>
+
+                            <!-- Header -->
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="Çalışma Modu"
+                                           Style="{StaticResource CardTitleTextStyle}" />
+
+                                <TextBlock Grid.Column="1"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           Text="{Binding ModeText}" />
+
+                            </Grid>
+
+                            <Border Height="1"
+                                    Margin="0,8,0,8"
+                                    Background="{DynamicResource BorderBrush}" />
+
+                            <!-- Mode selector -->
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="6" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <ComboBox Grid.Column="0"
+                                          MinHeight="30"
+                                          ItemsSource="{Binding ModeOptions}"
+                                          SelectedItem="{Binding SelectedModeOption}"
+                                          DisplayMemberPath="DisplayName"
+                                          Style="{StaticResource ComboInputStyle}" />
+
+                                <Button Grid.Column="2"
+                                        MinWidth="62"
+                                        Padding="9,4"
+                                        Content="Uygula"
+                                        Command="{Binding ApplyModeCommand}"
+                                        Style="{StaticResource PrimaryButtonStyle}" />
+
+                            </Grid>
+
+                            <TextBlock Margin="0,5,0,0"
+                                       Foreground="{DynamicResource ErrorBrush}"
+                                       FontSize="10"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding ModeChangeErrorMessage}" />
+
+                        </StackPanel>
+
+                    </Border>
+
+                    <!-- ================================================= -->
+                    <!-- VISION                                            -->
+                    <!-- ================================================= -->
+
+                    <Border Margin="0,8,0,0"
+                            Style="{StaticResource CompactCardBorderStyle}">
+
+                        <StackPanel>
+
+                            <TextBlock Text="Görüntü İşleme"
+                                       Style="{StaticResource CardTitleTextStyle}" />
+
+                            <Border Height="1"
+                                    Margin="0,8,0,8"
+                                    Background="{DynamicResource BorderBrush}" />
+
+                            <!-- Detection / Inference -->
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Detection count -->
+
+                                <StackPanel Grid.Column="0">
+
+                                    <TextBlock Text="Tespit"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                    <TextBlock Margin="0,2,0,0"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               Text="{Binding DetectionCountText}" />
+
+                                </StackPanel>
+
+                                <Border Grid.Column="1"
+                                        Margin="7,0"
+                                        Background="{DynamicResource BorderBrush}" />
+
+                                <!-- Inference -->
+
+                                <StackPanel Grid.Column="2"
+                                            Margin="8,0,0,0">
+
+                                    <TextBlock Text="Çıkarım"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                    <TextBlock Margin="0,2,0,0"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               Text="{Binding InferenceText}" />
+
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!-- Confidence -->
+
+                            <Border Height="1"
+                                    Margin="0,8,0,8"
+                                    Background="{DynamicResource BorderBrush}" />
+
+                            <TextBlock Text="Tespit Güven Eşiği"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                            <Grid Margin="0,5,0,0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="6" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0"
+                                         MinHeight="29"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding ConfidenceThresholdText,
+                                                        UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource TextInputStyle}" />
+
+                                <Button Grid.Column="2"
+                                        MinWidth="62"
+                                        Padding="8,4"
+                                        Content="Uygula"
+                                        Command="{Binding ApplyConfidenceThresholdCommand}"
+                                        Style="{StaticResource SecondaryButtonStyle}" />
+
+                            </Grid>
+
+                            <Grid Margin="0,3,0,0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock FontSize="9"
+                                           Text="0,00 – 1,00"
+                                           Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                <TextBlock Grid.Column="1"
+                                           Margin="8,0,0,0"
+                                           HorizontalAlignment="Right"
+                                           FontSize="9"
+                                           Foreground="{DynamicResource ErrorBrush}"
+                                           Text="{Binding ConfidenceThresholdErrorMessage}"
+                                           TextWrapping="Wrap">
+
+                                    <TextBlock.Style>
+
+                                        <Style TargetType="TextBlock">
+
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+
+                                            <Style.Triggers>
+
+                                                <DataTrigger Binding="{Binding HasConfidenceThresholdError}"
+                                                             Value="False">
+
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+
+                                                </DataTrigger>
+
+                                            </Style.Triggers>
+
+                                        </Style>
+
+                                    </TextBlock.Style>
+
+                                </TextBlock>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                    </Border>
+
+                    <!-- ================================================= -->
+                    <!-- WEAPON CONTROL                                    -->
+                    <!-- ================================================= -->
+
+                    <Border Margin="0,8,0,0"
+                            Style="{StaticResource CompactCardBorderStyle}">
+
+                        <StackPanel>
+
+                            <!-- Header -->
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="Silah Kontrolü"
+                                           Style="{StaticResource CardTitleTextStyle}" />
+
+                                <!-- Armed status -->
+
+                                <Border Grid.Column="1"
+                                        Padding="7,3"
+                                        CornerRadius="5">
+
+                                    <Border.Style>
+
+                                        <Style TargetType="Border">
+
+                                            <Setter Property="Background"
+                                                    Value="{DynamicResource NeutralBackgroundBrush}" />
+
+                                            <Style.Triggers>
+
+                                                <DataTrigger Binding="{Binding Weapon.ArmedValue}"
+                                                             Value="0">
+
+                                                    <Setter Property="Background"
+                                                            Value="{DynamicResource SuccessBackgroundBrush}" />
+
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Weapon.ArmedValue}"
+                                                             Value="1">
+
+                                                    <Setter Property="Background"
+                                                            Value="{DynamicResource WarningBackgroundBrush}" />
+
+                                                </DataTrigger>
+
+                                            </Style.Triggers>
+
+                                        </Style>
+
+                                    </Border.Style>
+
+                                    <TextBlock FontSize="10"
+                                               FontWeight="SemiBold"
+                                               Text="{Binding Weapon.ArmedText}">
+
+                                        <TextBlock.Style>
+
+                                            <Style TargetType="TextBlock">
+
+                                                <Setter Property="Foreground"
+                                                        Value="{DynamicResource NeutralBrush}" />
+
+                                                <Style.Triggers>
+
+                                                    <DataTrigger Binding="{Binding Weapon.ArmedValue}"
+                                                                 Value="0">
+
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource SuccessBrush}" />
+
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Weapon.ArmedValue}"
+                                                                 Value="1">
+
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource WarningBrush}" />
+
+                                                    </DataTrigger>
+
+                                                </Style.Triggers>
+
+                                            </Style>
+
+                                        </TextBlock.Style>
+
+                                    </TextBlock>
+
+                                </Border>
+
+                            </Grid>
+
+                            <Border Height="1"
+                                    Margin="0,8,0,8"
+                                    Background="{DynamicResource BorderBrush}" />
+
+                            <!-- ========================================= -->
+                            <!-- AUTHORIZATION                            -->
+                            <!-- ========================================= -->
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="6" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0"
+                                        MinHeight="29"
+                                        Padding="5,3"
+                                        FontSize="10"
+                                        Content="Yetkilendir"
+                                        Command="{Binding Weapon.EnableArmedCommand}"
+                                        ToolTip="Yalnızca MANUEL veya OTOMATİK modda kullanılabilir."
+                                        ToolTipService.ShowOnDisabled="True"
+                                        Style="{StaticResource SecondaryButtonStyle}" />
+
+                                <Button Grid.Column="2"
+                                        MinHeight="29"
+                                        Padding="5,3"
+                                        FontSize="10"
+                                        Content="Güvenliye Al"
+                                        Command="{Binding Weapon.DisableArmedCommand}"
+                                        Style="{StaticResource PrimaryButtonStyle}" />
+
+                            </Grid>
+
+                            <TextBlock Margin="0,4,0,0"
+                                       Foreground="{DynamicResource ErrorBrush}"
+                                       FontSize="9"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding Weapon.ArmedErrorMessage}" />
+
+                            <!-- ========================================= -->
+                            <!-- CONFIGURATION                            -->
+                            <!-- ========================================= -->
+
+                            <Border Height="1"
+                                    Margin="0,8,0,8"
+                                    Background="{DynamicResource BorderBrush}" />
+
+                            <!-- Fire Mode + Burst Count -->
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Fire Mode -->
+
+                                <StackPanel Grid.Column="0">
+
+                                    <TextBlock Text="Atış Modu"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                    <ComboBox Margin="0,4,0,0"
+                                              MinHeight="29"
+                                              ItemsSource="{Binding Weapon.FireModeOptions}"
+                                              SelectedItem="{Binding Weapon.SelectedFireModeOption}"
+                                              DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource WeaponComboBoxStyle}" />
+
+                                </StackPanel>
+
+                                <!-- Burst Count -->
+
+                                <StackPanel Grid.Column="2">
+
+                                    <TextBlock Text="Seri Adedi"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                    <ComboBox Margin="0,4,0,0"
+                                              MinHeight="29"
+                                              ItemsSource="{Binding Weapon.BurstCountOptions}"
+                                              SelectedItem="{Binding Weapon.SelectedBurstCount}"
+                                              Style="{StaticResource WeaponComboBoxStyle}" />
+
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!-- Weapon Selection -->
+
+                            <TextBlock Margin="0,7,0,0"
+                                       Text="Silah Seçimi"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                            <ComboBox Margin="0,4,0,0"
+                                      MinHeight="29"
+                                      ItemsSource="{Binding Weapon.WeaponSelectionOptions}"
+                                      SelectedItem="{Binding Weapon.SelectedWeaponOption}"
+                                      DisplayMemberPath="DisplayName"
+                                      Style="{StaticResource WeaponComboBoxStyle}" />
+
+                            <!-- Apply -->
+
+                            <Button Margin="0,7,0,0"
+                                    MinHeight="30"
+                                    Padding="6,3"
+                                    Content="Ayarları Uygula"
+                                    Command="{Binding Weapon.ApplyConfigurationCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}" />
+
+                            <!-- Error -->
+
+                            <TextBlock Margin="0,4,0,0"
+                                       Foreground="{DynamicResource ErrorBrush}"
+                                       FontSize="9"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding Weapon.ConfigurationErrorMessage}" />
+
+                            <!-- Success -->
+
+                            <TextBlock Margin="0,3,0,0"
+                                       Foreground="{DynamicResource SuccessBrush}"
+                                       FontSize="9"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding Weapon.ConfigurationStatusMessage}" />
+                            
+                        </StackPanel>
+
+                    </Border>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

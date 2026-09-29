@@ -1,0 +1,299 @@
+/*
+ * Operatör panelleri için ortak koyu tema.
+ * Sayfaya özel yerleşim (grid, video alanı vb.) her view'ın kendi
+ * izole edilmiş .cshtml.css dosyasında kalır; burada yalnızca
+ * birden fazla sayfada tekrar eden bileşenler var (kart, buton,
+ * rozet, tablo hücresi vb.).
+ */
+
+.op-page {
+    --op-bg: #12141a;
+    --op-surface: #1b1e26;
+    --op-surface-alt: #20242d;
+    --op-border: #2a2f3a;
+    --op-text: #eef1f6;
+    --op-text-secondary: #9aa3b2;
+    --op-accent: #3b82f6;
+    --op-accent-hover: #2f6fe0;
+    --op-success: #22c55e;
+    --op-success-bg: rgba(34, 197, 94, 0.14);
+    --op-warning: #f59e0b;
+    --op-warning-bg: rgba(245, 158, 11, 0.14);
+    --op-error: #ef4444;
+    --op-live: #f04438;
+
+    background: var(--op-bg);
+    color: var(--op-text);
+    border-radius: 12px;
+    padding: 18px;
+    font-size: 14px;
+}
+
+.op-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.op-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--op-text);
+}
+
+.op-subtitle {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--op-text-secondary);
+}
+
+.op-status-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.op-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px;
+    background: var(--op-surface);
+    border: 1px solid var(--op-border);
+    border-radius: 7px;
+}
+
+.op-badge-label {
+    font-size: 11px;
+    color: var(--op-text-secondary);
+}
+
+.op-badge-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--op-text);
+}
+
+.op-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--op-accent);
+}
+
+.op-dot-live {
+    background: var(--op-live);
+}
+
+.op-card {
+    background: var(--op-surface);
+    border: 1px solid var(--op-border);
+    border-radius: 7px;
+    padding: 12px;
+}
+
+.op-card-disabled {
+    opacity: 0.55;
+}
+
+.op-card-subsection {
+    display: flex;
+    flex-direction: column;
+}
+
+.op-status-pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: var(--op-surface-alt);
+    color: var(--op-text-secondary);
+}
+
+.op-status-pill-safe {
+    background: var(--op-success-bg);
+    color: var(--op-success);
+}
+
+.op-status-pill-armed {
+    background: var(--op-warning-bg);
+    color: var(--op-warning);
+}
+
+.op-status-pill-unknown {
+    background: var(--op-surface-alt);
+    color: var(--op-text-secondary);
+}
+
+.op-status-pill-info {
+    background: rgba(59, 130, 246, 0.14);
+    color: var(--op-accent);
+}
+
+.op-status-pill-error {
+    background: rgba(239, 68, 68, 0.14);
+    color: var(--op-error);
+}
+
+.op-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.op-card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--op-text);
+}
+
+.op-card-header-value {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--op-text);
+}
+
+.op-card-tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--op-text-secondary);
+    background: var(--op-surface-alt);
+    border: 1px solid var(--op-border);
+    border-radius: 5px;
+    padding: 2px 6px;
+}
+
+.op-card-divider {
+    height: 1px;
+    background: var(--op-border);
+    margin: 8px 0;
+}
+
+.op-row {
+    display: flex;
+    gap: 6px;
+}
+
+.op-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.op-field-label {
+    display: block;
+    font-size: 10px;
+    color: var(--op-text-secondary);
+    margin-top: 7px;
+}
+
+.op-select,
+.op-input {
+    flex: 1;
+    min-height: 29px;
+    background: var(--op-surface-alt);
+    border: 1px solid var(--op-border);
+    border-radius: 5px;
+    color: var(--op-text);
+    padding: 0 8px;
+    font-size: 12px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.op-select:first-child,
+.op-row > .op-select,
+.op-row > .op-input {
+    margin-top: 0;
+}
+
+.op-btn {
+    min-height: 29px;
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.op-btn:disabled {
+    cursor: not-allowed;
+}
+
+.op-btn-primary {
+    background: var(--op-accent);
+    color: white;
+}
+
+.op-btn-primary:hover:not(:disabled) {
+    background: var(--op-accent-hover);
+}
+
+.op-btn-secondary {
+    background: transparent;
+    border-color: var(--op-border);
+    color: var(--op-text);
+}
+
+.op-btn-fire {
+    width: 100%;
+    margin-top: 6px;
+    background: var(--op-error);
+    color: white;
+}
+
+.op-btn-fire:hover:not(:disabled) {
+    background: #d63c3c;
+}
+
+.op-metric-row {
+    display: flex;
+    align-items: center;
+}
+
+.op-metric {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.op-metric-label {
+    font-size: 10px;
+    color: var(--op-text-secondary);
+}
+
+.op-metric-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--op-text);
+}
+
+.op-metric-sep {
+    width: 1px;
+    align-self: stretch;
+    background: var(--op-border);
+    margin: 0 8px;
+}
+
+.op-error-text {
+    margin: 6px 0 0;
+    font-size: 10px;
+    color: var(--op-error);
+    min-height: 12px;
+}
+
+.op-success-text {
+    margin: 3px 0 0;
+    font-size: 10px;
+    color: var(--op-success);
+    min-height: 12px;
+}
